@@ -18,10 +18,16 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "ES2022",
-    "lib": [
-      "ES2022",
-      "dom"
-    ]
+    "lib": ["ES2022", "dom"],
+    "baseUrl": "./",
+    "paths": {
+      "@core-services": ["src/app/core/services"],
+      "@core-interceptors": ["src/app/core/interceptors"],
+      "@core-components": ["src/app/core/components"],
+      "@app-models": ["src/app/shared/models"],
+      "@app-enums": ["src/app/shared/enums"],
+      "@shared-services": ["src/app/shared/services"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
