@@ -6,6 +6,7 @@
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,
+    "strictPropertyInitialization": false,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
@@ -27,6 +28,7 @@
       "@app-models": ["src/app/shared/models"],
       "@app-enums": ["src/app/shared/enums"],
       "@shared-services": ["src/app/shared/services"],
+      "@shared-components": ["src/app/shared/components"],
       "@environment": ["src/environments/environment"]
     }
   },
