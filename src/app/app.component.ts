@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { JobAd } from '@app-models';
 import { HttpLoaderComponent } from "@core-components";
-import { JobsHttpService } from '@shared-services';
+import { select, Store } from '@ngrx/store';
 import { BehaviorSubject } from 'rxjs';
-
+import * as JobActions from './core/store/actions/job.actions';
+import * as JobSelectors from './core/store/selectors/job.selectors';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -12,11 +14,18 @@ import { BehaviorSubject } from 'rxjs';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
-  testService = inject(JobsHttpService);
-  jobs$ = new BehaviorSubject<any[]>([]);
+export class AppComponent {
+  jobs$ = new BehaviorSubject<JobAd[]>([]);
+  store = inject(Store)
 
-  ngOnInit(): void {
-    this.testService.getJobs().subscribe((jobs) => this.jobs$.next(jobs))
+  onTest() {
+    this.store.dispatch(JobActions.loadJobsAction());
+
+    this.store
+      .pipe(
+        select(JobSelectors.allJobsSelector)
+      ).subscribe(jobs => {
+        this.jobs$.next(jobs);
+      })
   }
 }
