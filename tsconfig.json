@@ -26,7 +26,8 @@
       "@core-components": ["src/app/core/components"],
       "@app-models": ["src/app/shared/models"],
       "@app-enums": ["src/app/shared/enums"],
-      "@shared-services": ["src/app/shared/services"]
+      "@shared-services": ["src/app/shared/services"],
+      "@environment": ["src/environments/environment"]
     }
   },
   "angularCompilerOptions": {
