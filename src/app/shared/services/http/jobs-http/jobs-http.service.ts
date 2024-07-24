@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { JobAdDto } from '@app-models';
 import { CoreHttpService } from '@core-services';
 import { Observable } from 'rxjs';
 
@@ -7,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class JobsHttpService extends CoreHttpService {
 
-  getJobs(): Observable<any> {
-    return this.get('jobs');
+  getJobs(): Observable<JobAdDto[]> {
+    return this.get<JobAdDto[]>('jobs');
   }
 }
