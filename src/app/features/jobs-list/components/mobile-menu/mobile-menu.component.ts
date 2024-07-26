@@ -1,20 +1,15 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
   inject,
   Input,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { JobAd } from '@app-models';
-import { Store } from '@ngrx/store';
-import { filter } from 'rxjs';
-import * as JobActions from '../../../../core/store/actions/job.actions';
-import { DeleteJobComponent } from '../delete-job/delete-job.component';
+import { JobDeleteUtilityService } from '@shared-services';
 
 @Component({
   selector: 'app-mobile-menu',
@@ -29,34 +24,15 @@ export class MobileMenuComponent {
 
   @Input() job: JobAd;
 
-  private dialog = inject(MatDialog);
-  private destroyRef = inject(DestroyRef);
-  private store = inject(Store);
+  private deleteJobService = inject(JobDeleteUtilityService);
 
   //#endregion
 
   //#region  UI Methods
 
   onDelete() {
-    const deleteRef = this.dialog.open(DeleteJobComponent, {
-      data: { job: this.job },
-    });
-    deleteRef
-      .afterClosed()
-      .pipe(
-        filter((response) => !!response),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe(this.handleDeleteResponse);
+    this.deleteJobService.deleteJob(this.job);
   }
-
-  //#endregion
-
-  //#region Handlers
-
-  private handleDeleteResponse = () => {
-    this.store.dispatch(JobActions.deleteJobAction({ jobId: this.job.id }));
-  };
 
   //#endregion
 }
