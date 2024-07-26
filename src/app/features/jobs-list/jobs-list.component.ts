@@ -13,8 +13,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { JobAd, Pagination } from '@app-models';
-import { CommonUtilityService, ToasterService } from '@core-services';
+import { CurrentPagination, JobAd, Pagination } from '@app-models';
+import { ToasterService } from '@core-services';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, filter } from 'rxjs';
 import * as JobActions from '../../core/store/actions/job.actions';
@@ -46,13 +46,14 @@ export class JobsListComponent implements OnInit {
 
   public jobs$ = new BehaviorSubject<JobAd[]>([]);
   public pagination$ = new BehaviorSubject<Pagination>({} as Pagination);
-  public perPage = 5;
-  private currentPage = 1;
+  public currentPagination$ = new BehaviorSubject<CurrentPagination>(
+    {} as CurrentPagination
+  );
+
   private store = inject(Store);
   private destroyRef = inject(DestroyRef);
   private dialog = inject(MatDialog);
   private toasterService = inject(ToasterService);
-  private commonService = inject(CommonUtilityService);
 
   //#endregion
 
@@ -62,23 +63,17 @@ export class JobsListComponent implements OnInit {
     this.initPaginator();
     this.initJobs();
     this.initJobsSubscription();
-    this.initJobDeleteSubscription();
   }
 
   //#endregion
 
   //#region Init
 
-  private initJobDeleteSubscription(): void {
-    this.commonService.jobDeleteConfirmation
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(this.handleDeleteJob);
-  }
-
   private initJobs(): void {
-    this.store.dispatch(
-      JobActions.loadJobsAction({ page: 1, perPage: this.perPage })
-    );
+    this.store
+      .select(JobSelectors.currentPaginationSelector)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(this.handleCurrentPagination);
   }
 
   private initPaginator(): void {
@@ -100,9 +95,10 @@ export class JobsListComponent implements OnInit {
   //#region UI Methods
 
   onPaginationChange(event: PageEvent) {
-    console.log(event);
-    this.perPage = event.pageSize;
-    this.currentPage = event.pageIndex + 1;
+    this.currentPagination$.next({
+      page: event.pageIndex + 1,
+      perPage: event.pageSize,
+    });
     this.store.dispatch(
       JobActions.loadJobsAction({
         page: event.pageIndex + 1,
@@ -134,19 +130,20 @@ export class JobsListComponent implements OnInit {
   private handleNewJob = (): void => {
     this.store.dispatch(
       JobActions.loadJobsAction({
-        page: this.currentPage,
-        perPage: this.perPage,
+        page: this.currentPagination$.value.page,
+        perPage: this.currentPagination$.value.perPage,
       })
     );
     // TODO: When a job ad is published, an invoice should be created.
     this.toasterService.showSuccess('Job has been created successfully');
   };
 
-  private handleDeleteJob = (): void => {
+  private handleCurrentPagination = (pagination: CurrentPagination): void => {
+    this.currentPagination$.next(pagination);
     this.store.dispatch(
       JobActions.loadJobsAction({
-        page: this.currentPage,
-        perPage: this.perPage,
+        page: pagination.page,
+        perPage: pagination.perPage,
       })
     );
   };
