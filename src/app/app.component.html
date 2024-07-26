@@ -1,4 +1,8 @@
-{{ jobs$ | async | json }}
 <app-http-loader />
 
-<button (click)="onTest()">Test</button>
+<header></header>
+<body>
+  <div class="container">
+    <router-outlet />
+  </div>
+</body>

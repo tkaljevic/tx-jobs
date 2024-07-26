@@ -8,7 +8,15 @@ import { Observable } from 'rxjs';
 })
 export class JobsHttpService extends CoreHttpService {
 
-  getJobs(): Observable<JobAdDto[]> {
-    return this.get<JobAdDto[]>('jobs');
+  /**
+   * Get Jobs chunk from the http source
+   *
+   * @param start starting job position
+   * @param limit how many jobs to get
+   *
+   * @returns Observable<JobAdDto[]>
+   */
+  getJobs(start: number, limit: number): Observable<JobAdDto[]> {
+    return this.get<JobAdDto[]>(`jobs?_start=${start}&_limit=${limit}`);
   }
 }

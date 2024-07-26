@@ -1,0 +1,13 @@
+.job-item {
+  margin-top: 8px;
+}
+
+.title {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 8px;
+}
