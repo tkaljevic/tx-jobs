@@ -1,4 +1,5 @@
 import { inject, Injectable } from "@angular/core";
+import { ToasterService } from "@core-services";
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { JobsHttpService } from "@shared-services";
 import { catchError, map, mergeMap, of } from "rxjs";
@@ -10,6 +11,7 @@ export class JobEffects {
 
   private actions$ = inject(Actions);
   private jobsHttpService = inject(JobsHttpService);
+  private toasterService = inject(ToasterService);
 
   loadJobsEffect$ = createEffect(() =>
     this.actions$.pipe(
@@ -19,6 +21,22 @@ export class JobEffects {
         .pipe(
           map(data => JobActions.loadJobsSuccessAction({ data })),
           catchError((error) => { return of(JobActions.loadJobsFailureAction({ error: error.message })) })
+        )
+      )
+    )
+  )
+
+  deleteJobEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(JobActions.deleteJobAction),
+      mergeMap((action) => this.jobsHttpService
+        .deleteJob(action.jobId)
+        .pipe(
+          map((job) => {
+            this.toasterService.showSuccess(`Job ${job.title} has been deleted`);
+            return JobActions.deleteJobSuccessAction()
+          }),
+          catchError((error) => { return of(JobActions.deleteJobFailureAction({ error: error.message })) })
         )
       )
     )

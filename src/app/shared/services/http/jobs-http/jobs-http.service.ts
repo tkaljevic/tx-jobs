@@ -30,4 +30,13 @@ export class JobsHttpService extends CoreHttpService {
   addJob(job: Partial<JobAd>): Observable<JobAd> {
     return this.post<JobAd>('jobs', job);
   }
+
+  /**
+   *
+   * @param jobId
+   * @returns
+   */
+  deleteJob(jobId: string): Observable<JobAd> {
+    return this.delete<JobAd>(`jobs/${jobId.toString()}`);
+  }
 }
