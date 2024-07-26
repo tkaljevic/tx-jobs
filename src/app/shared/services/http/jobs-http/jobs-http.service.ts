@@ -4,10 +4,9 @@ import { CoreHttpService } from '@core-services';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class JobsHttpService extends CoreHttpService {
-
   /**
    * Get Jobs chunk from the http source
    *
@@ -16,10 +15,14 @@ export class JobsHttpService extends CoreHttpService {
    *
    * @returns Observable<JobAdDto[]>
    */
-  getJobs(page: number, perPage: number): Observable<PaginatedResponse<JobAdDto>> {
-    return this.get<PaginatedResponse<JobAdDto>>(`jobs?_page=${page}&_per_page=${perPage}&_sort=updatedAt`);
+  getJobs(
+    page: number,
+    perPage: number
+  ): Observable<PaginatedResponse<JobAdDto>> {
+    return this.get<PaginatedResponse<JobAdDto>>(
+      `jobs?_page=${page}&_per_page=${perPage}&_sort=updatedAt`
+    );
   }
-
 
   /**
    * Create a new Job.
@@ -32,11 +35,12 @@ export class JobsHttpService extends CoreHttpService {
   }
 
   /**
+   * Delete a job, for ID given.
    *
-   * @param jobId
-   * @returns
+   * @param jobId job to be deleted
+   * @returns Observable<JobAd>
    */
   deleteJob(jobId: string): Observable<JobAd> {
-    return this.delete<JobAd>(`jobs/${jobId.toString()}`);
+    return this.delete<JobAd>(`jobs/${jobId}`);
   }
 }

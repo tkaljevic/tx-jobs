@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+  Input,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -13,18 +19,12 @@ import { DeleteJobComponent } from '../delete-job/delete-job.component';
 @Component({
   selector: 'app-mobile-menu',
   standalone: true,
-  imports: [
-    MatButtonModule,
-    MatIconModule,
-    MatMenuModule,
-    MatDialogModule
-  ],
+  imports: [MatButtonModule, MatIconModule, MatMenuModule, MatDialogModule],
   templateUrl: './mobile-menu.component.html',
   styleUrl: './mobile-menu.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MobileMenuComponent {
-
   //#region Component Props
 
   @Input() job: JobAd;
@@ -38,10 +38,13 @@ export class MobileMenuComponent {
   //#region  UI Methods
 
   onDelete() {
-    const deleteRef = this.dialog.open(DeleteJobComponent, { data: { job: this.job } },);
-    deleteRef.afterClosed()
+    const deleteRef = this.dialog.open(DeleteJobComponent, {
+      data: { job: this.job },
+    });
+    deleteRef
+      .afterClosed()
       .pipe(
-        filter(response => !!response),
+        filter((response) => !!response),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(this.handleDeleteResponse);
@@ -52,9 +55,8 @@ export class MobileMenuComponent {
   //#region Handlers
 
   private handleDeleteResponse = () => {
-    this.store.dispatch(JobActions.deleteJobAction({ jobId: this.job.id }))
-  }
+    this.store.dispatch(JobActions.deleteJobAction({ jobId: this.job.id }));
+  };
 
   //#endregion
-
 }
