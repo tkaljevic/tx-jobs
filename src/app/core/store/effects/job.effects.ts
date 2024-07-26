@@ -14,10 +14,10 @@ export class JobEffects {
   loadJobsEffect$ = createEffect(() =>
     this.actions$.pipe(
       ofType(JobActions.loadJobsAction),
-      mergeMap(() => this.jobsHttpService
-        .getJobs()
+      mergeMap((action) => this.jobsHttpService
+        .getJobs(action.page, action.perPage)
         .pipe(
-          map(jobs => JobActions.loadJobsSuccessAction({ jobs })),
+          map(data => JobActions.loadJobsSuccessAction({ data })),
           catchError((error) => { return of(JobActions.loadJobsFailureAction({ error: error.message })) })
         )
       )
