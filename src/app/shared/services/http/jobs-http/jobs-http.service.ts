@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { JobAdDto } from '@app-models';
+import { JobAdDto, PaginatedResponse } from '@app-models';
 import { CoreHttpService } from '@core-services';
 import { Observable } from 'rxjs';
 
@@ -11,12 +11,12 @@ export class JobsHttpService extends CoreHttpService {
   /**
    * Get Jobs chunk from the http source
    *
-   * @param start starting job position
-   * @param limit how many jobs to get
+   * @param page starting page
+   * @param perPage number of jobs per page
    *
    * @returns Observable<JobAdDto[]>
    */
-  getJobs(start: number, limit: number): Observable<JobAdDto[]> {
-    return this.get<JobAdDto[]>(`jobs?_start=${start}&_limit=${limit}`);
+  getJobs(page: number, perPage: number): Observable<PaginatedResponse<JobAdDto>> {
+    return this.get<PaginatedResponse<JobAdDto>>(`jobs?_page=${page}&_per_page=${perPage}`);
   }
 }

@@ -24,4 +24,14 @@
     </div>
   </mat-card-content>
 </mat-card>
+} @if((pagination$ | async); as pagination) {
+
+<mat-paginator
+  [length]="pagination.items"
+  [pageSize]="5"
+  [pageSizeOptions]="[3, 5, 10]"
+  (page)="onPaginationChange($event)"
+  aria-label="Select page"
+>
+</mat-paginator>
 } }
