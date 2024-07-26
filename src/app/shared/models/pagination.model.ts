@@ -1,8 +1,8 @@
 export interface Pagination {
   first: number;
-  items: number;
   last: number;
-  next: number;
+  items: number;
   pages: number;
+  next: number | null;
   prev: number | null
 }

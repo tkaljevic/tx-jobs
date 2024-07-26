@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { JobAdDto, PaginatedResponse } from '@app-models';
+import { JobAd, JobAdDto, PaginatedResponse } from '@app-models';
 import { CoreHttpService } from '@core-services';
 import { Observable } from 'rxjs';
 
@@ -17,6 +17,17 @@ export class JobsHttpService extends CoreHttpService {
    * @returns Observable<JobAdDto[]>
    */
   getJobs(page: number, perPage: number): Observable<PaginatedResponse<JobAdDto>> {
-    return this.get<PaginatedResponse<JobAdDto>>(`jobs?_page=${page}&_per_page=${perPage}`);
+    return this.get<PaginatedResponse<JobAdDto>>(`jobs?_page=${page}&_per_page=${perPage}&_sort=updatedAt`);
+  }
+
+
+  /**
+   * Create a new Job.
+   *
+   * @param job Job to be saved
+   * @returns Job created
+   */
+  addJob(job: Partial<JobAd>): Observable<JobAd> {
+    return this.post<JobAd>('jobs', job);
   }
 }

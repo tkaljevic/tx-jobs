@@ -1,9 +1,14 @@
 @if((jobs$ | async)?.length) {
 
-<div class="row">
-  <div class="col-12"><button mat-raised-button>Add</button> FILTER</div>
+<div class="row" class="top-menu">
+  <div class="col-xs-6">
+    <button mat-flat-button color="primary" (click)="onAddJob()">
+      Add Job
+    </button>
+  </div>
+  <div class="col-xs-6">FILTER</div>
 </div>
-
+<div class="row">&nbsp;</div>
 @for(job of (jobs$ | async); track job.id) {
 <mat-card appearance="outlined" class="job-item">
   <mat-card-content>
@@ -25,13 +30,15 @@
   </mat-card-content>
 </mat-card>
 } @if((pagination$ | async); as pagination) {
-
 <mat-paginator
   [length]="pagination.items"
-  [pageSize]="5"
+  [pageSize]="perPage"
   [pageSizeOptions]="[3, 5, 10]"
   (page)="onPaginationChange($event)"
   aria-label="Select page"
 >
 </mat-paginator>
-} }
+
+} } @else {
+<div class="no-jobs">No jobs to show.</div>
+}
