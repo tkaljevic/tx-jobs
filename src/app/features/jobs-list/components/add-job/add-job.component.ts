@@ -1,0 +1,92 @@
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { JobsHttpService } from '@shared-services';
+@Component({
+  selector: 'app-add-job',
+  standalone: true,
+  imports: [
+    MatDialogModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatChipsModule,
+    MatIconModule,
+    MatInputModule,
+    MatInputModule,
+    MatSelectModule,
+  ],
+  templateUrl: './add-job.component.html',
+  styleUrl: './add-job.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class AddJobComponent implements OnInit {
+  public jobForm: FormGroup
+  public currentSkills = signal<string[]>([]);
+
+  private formBuilder = inject(FormBuilder);
+  private jobsHttpService = inject(JobsHttpService);
+  private destroyRef = inject(DestroyRef);
+  private dialogRef = inject(MatDialogRef<AddJobComponent>);
+
+  ngOnInit(): void {
+    this.initForm();
+  }
+
+  //#region Init
+
+  private initForm(): void {
+    this.jobForm = this.formBuilder.group({
+      title: new FormControl('', [Validators.required]),
+      description: new FormControl('', []),
+      skills: new FormControl([''], []),
+      status: new FormControl('', [Validators.required])
+    });
+  }
+
+  //#endregion
+
+  //#region UI Methods
+
+  onRemoveSkill(skillName: string) {
+    this.currentSkills.update(keywords => {
+      const index = keywords.indexOf(skillName);
+      if (index < 0) {
+        return keywords;
+      }
+      keywords.splice(index, 1);
+      return [...keywords];
+    });
+  }
+
+  onAddSkill(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+    if (value) {
+      this.currentSkills.update(keywords => [...keywords, value]);
+    }
+    event.chipInput!.clear();
+  }
+
+  onSave(): void {
+    this.jobsHttpService.addJob({
+      description: this.jobForm.value.description,
+      status: this.jobForm.value.status,
+      title: this.jobForm.value.title,
+      skills: this.currentSkills()
+    }).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: (job) => { this.dialogRef.close(job) },
+      error: () => { this.initForm() }, // TODO: Read Error from Store in a separate component, make that component's instance in app.component
+    });
+  }
+
+  //#endregion
+}
