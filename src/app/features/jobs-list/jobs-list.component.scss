@@ -15,3 +15,23 @@
 .top-menu {
   margin-top: 24px;
 }
+
+.filter-wrapper {
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.no-jobs {
+  margin-top: 16px;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination {
+  margin-top: 24px;
+}
