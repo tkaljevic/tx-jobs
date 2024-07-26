@@ -1,5 +1,5 @@
 export interface JobAd {
-  id: number;
+  id: string;
   title: string;
   description: string;
   skills: string[];

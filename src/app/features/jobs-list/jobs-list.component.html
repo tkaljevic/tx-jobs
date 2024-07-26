@@ -1,13 +1,14 @@
-@if((jobs$ | async)?.length) {
-
 <div class="row" class="top-menu">
   <div class="col-xs-6">
     <button mat-flat-button color="primary" (click)="onAddJob()">
       Add Job
     </button>
   </div>
-  <div class="col-xs-6">FILTER</div>
+  <div class="col-xs-6">
+    <div class="filter-wrapper">FILTER</div>
+  </div>
 </div>
+@if((jobs$ | async)?.length) {
 <div class="row">&nbsp;</div>
 @for(job of (jobs$ | async); track job.id) {
 <mat-card appearance="outlined" class="job-item">
@@ -19,26 +20,32 @@
         </div>
       </div>
       <div class="col-xs-2 hidden visible-xs">
-        <app-mobile-menu />
+        <app-mobile-menu [job]="job" />
       </div>
       <div
         class="col-sm-6 col-md-4 hidden visible-sm visible-md visible-lg visible-xl"
       >
-        <app-job-actions />
+        <app-job-actions [job]="job" />
       </div>
     </div>
   </mat-card-content>
 </mat-card>
 } @if((pagination$ | async); as pagination) {
-<mat-paginator
-  [length]="pagination.items"
-  [pageSize]="perPage"
-  [pageSizeOptions]="[3, 5, 10]"
-  (page)="onPaginationChange($event)"
-  aria-label="Select page"
->
-</mat-paginator>
+<div class="pagination">
+  <mat-paginator
+    [length]="pagination.items"
+    [pageSize]="perPage"
+    [pageSizeOptions]="[3, 5, 10]"
+    (page)="onPaginationChange($event)"
+    aria-label="Select page"
+  >
+  </mat-paginator>
+</div>
 
 } } @else {
-<div class="no-jobs">No jobs to show.</div>
+<div class="row">
+  <div class="col-sm-12">
+    <div class="no-jobs">No jobs to show.</div>
+  </div>
+</div>
 }
