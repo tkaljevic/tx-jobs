@@ -9,10 +9,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { JobAd } from '@app-models';
-import {
-  JobDeleteUtilityService,
-  UpdateStatusUtilityService,
-} from '@shared-services';
+import { DialogUtilityService } from '@shared-services';
 
 @Component({
   selector: 'app-mobile-menu',
@@ -26,20 +23,22 @@ export class MobileMenuComponent {
   //#region Component Props
 
   @Input() job: JobAd;
-
-  private deleteJobService = inject(JobDeleteUtilityService);
-  private updateStatusService = inject(UpdateStatusUtilityService);
+  private dialogUtilityService = inject(DialogUtilityService);
 
   //#endregion
 
   //#region  UI Methods
 
   onDelete() {
-    this.deleteJobService.deleteJob(this.job);
+    this.dialogUtilityService.deleteJob(this.job);
   }
 
   onChangeStatus() {
-    this.updateStatusService.updateStatus(this.job);
+    this.dialogUtilityService.updateStatus(this.job);
+  }
+
+  onListInvoices() {
+    this.dialogUtilityService.listInvoices(this.job);
   }
 
   //#endregion

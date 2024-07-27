@@ -3,7 +3,7 @@
     {
       "id": "4dc6",
       "description": "",
-      "status": "draft",
+      "status": "published",
       "title": "B",
       "skills": []
     },
@@ -43,5 +43,27 @@
       "skills": []
     }
   ],
-  "invoices": []
+  "invoices": [
+    {
+      "id": "5717",
+      "amount": 220,
+      "dueDate": "2024-08-31T16:14:07.705Z",
+      "jobAdId": "4dc6",
+      "jobId": "4dc6"
+    },
+    {
+      "id": "5717",
+      "amount": 220,
+      "dueDate": "2024-08-31T16:14:07.705Z",
+      "jobAdId": "4dc6",
+      "jobId": "4dc6"
+    },
+    {
+      "id": "5717",
+      "amount": 220,
+      "dueDate": "2024-08-31T16:14:07.705Z",
+      "jobAdId": "4dc6",
+      "jobId": "4dc6"
+    }
+  ]
 }

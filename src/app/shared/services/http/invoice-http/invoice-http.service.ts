@@ -24,4 +24,14 @@ export class InvoiceHttpService extends CoreHttpService {
      */
     return this.post('invoices', { ...invoice, jobId: invoice.jobAdId });
   }
+
+  /**
+   * Get all invoices for the Job ID given.
+   *
+   * @param jobId Job containing related invoices
+   * @returns Observable<InvoiceDto[]>
+   */
+  getInvoiceByJobId(jobId: string): Observable<InvoiceDto[]> {
+    return this.get<InvoiceDto[]>(`invoices?jobAdId=${jobId}`);
+  }
 }

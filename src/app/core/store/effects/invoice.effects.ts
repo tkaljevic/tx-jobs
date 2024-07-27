@@ -26,4 +26,24 @@ export class InvoiceEffects {
       )
     )
   );
+
+  listInvoiceEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(InvoiceActions.getInvoicesAction),
+      mergeMap((action) =>
+        this.invoiceHttpService.getInvoiceByJobId(action.jobId).pipe(
+          map((invoices) =>
+            InvoiceActions.getInvoicesSuccessAction({ invoices })
+          ),
+          catchError((error) =>
+            of(
+              InvoiceActions.getInvoicesFailureAction({
+                error: error.message,
+              })
+            )
+          )
+        )
+      )
+    )
+  );
 }
