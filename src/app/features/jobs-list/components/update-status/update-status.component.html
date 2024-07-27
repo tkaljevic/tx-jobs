@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>Change Job Status</h2>
+<mat-dialog-content class="mat-typography">
+  <h6>Current status: {{ data.job.status }}</h6>
+  <mat-button-toggle-group
+    name="changeStatus"
+    aria-label="Status"
+    (change)="onChange($event)"
+  >
+    @for(status of allStatuses; track status) {
+    <mat-button-toggle
+      [value]="status"
+      [disabled]="!allowedStatusChanges.includes(status)"
+      >{{ status | titlecase }}
+    </mat-button-toggle>
+    }
+  </mat-button-toggle-group>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close color="warn">Cancel</button>
+  <button
+    mat-flat-button
+    [disabled]="data.job.status === status"
+    (click)="onSave()"
+  >
+    Save
+  </button>
+</mat-dialog-actions>

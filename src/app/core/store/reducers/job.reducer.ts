@@ -84,5 +84,21 @@ export const jobReducer = createReducer(
       warning: '',
       success: `${action.job.title} has been created`,
     },
+  })),
+  on(JobActions.updateJobStatusSuccessAction, (state) => ({
+    ...state,
+    message: {
+      error: '',
+      success: 'Job Successfully Updated',
+      warning: '',
+    },
+  })),
+  on(JobActions.updateJobStatusFailureAction, (state, action) => ({
+    ...state,
+    message: {
+      error: action.error,
+      success: '',
+      warning: '',
+    },
   }))
 );

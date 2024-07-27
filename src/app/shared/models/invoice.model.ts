@@ -1,6 +1,6 @@
 export interface Invoice {
-  id: number;
-  jobAdId: number;
+  id: string;
+  jobAdId: string;
   amount: number;
   dueDate: Date;
 }

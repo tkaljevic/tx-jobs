@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -19,10 +20,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { JobAdStatus } from '@app-models';
 @Component({
   selector: 'app-add-job',
   standalone: true,
   imports: [
+    CommonModule,
     MatDialogModule,
     MatButtonModule,
     ReactiveFormsModule,
@@ -40,6 +43,7 @@ import { MatSelectModule } from '@angular/material/select';
 export class AddJobComponent implements OnInit {
   public jobForm: FormGroup;
   public currentSkills = signal<string[]>([]);
+  public jobStatuses: JobAdStatus[] = ['archived', 'draft', 'published'];
 
   private formBuilder = inject(FormBuilder);
   private dialogRef = inject(MatDialogRef<AddJobComponent>);
@@ -53,7 +57,7 @@ export class AddJobComponent implements OnInit {
   private initForm(): void {
     this.jobForm = this.formBuilder.group({
       title: new FormControl('', [Validators.required]),
-      description: new FormControl('', []),
+      description: new FormControl('', [Validators.required]),
       skills: new FormControl([''], []),
       status: new FormControl('', [Validators.required]),
     });
