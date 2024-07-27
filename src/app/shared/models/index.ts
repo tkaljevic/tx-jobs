@@ -6,3 +6,4 @@ export * from './job-state.model';
 export * from './job.model';
 export * from './paginated-response.model';
 export * from './pagination.model';
+export * from './toaster-message.type';

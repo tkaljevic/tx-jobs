@@ -44,3 +44,13 @@ export const addNewJobFailureAction = createAction(
   '[Jobs] Add new job failure',
   props<{ error: string }>()
 );
+
+export const setErrorMessage = createAction(
+  '[Toaster] Set error message',
+  props<{ message: string }>()
+);
+
+export const setSuccessMessage = createAction(
+  '[Toaster] Set success message',
+  props<{ message: string }>()
+);
