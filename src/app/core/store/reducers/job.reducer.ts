@@ -5,6 +5,7 @@ import {
   ToasterMessage,
 } from '@app-models';
 import { createReducer, on } from '@ngrx/store';
+import { getInvoicesFailureAction } from '../actions/invoice.actions';
 import * as JobActions from '../actions/job.actions';
 
 export const initialState: JobState = {
@@ -94,6 +95,14 @@ export const jobReducer = createReducer(
     },
   })),
   on(JobActions.updateJobStatusFailureAction, (state, action) => ({
+    ...state,
+    message: {
+      error: action.error,
+      success: '',
+      warning: '',
+    },
+  })),
+  on(getInvoicesFailureAction, (state, action) => ({
     ...state,
     message: {
       error: action.error,
