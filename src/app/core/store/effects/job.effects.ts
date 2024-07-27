@@ -84,4 +84,33 @@ export class JobEffects {
       )
     )
   );
+
+  addNewJobEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(JobActions.addNewJobAction),
+      withLatestFrom(
+        this.store.pipe(select(JobSelectors.currentPaginationSelector))
+      ),
+      mergeMap(([action, pagination]) =>
+        this.jobsHttpService.addJob(action.job).pipe(
+          concatMap((job) => {
+            this.toasterService.showSuccess('Job has been added');
+            // TODO: Invoice add?
+            return [
+              JobActions.addJobSuccessAction({ job }),
+              JobActions.loadJobsAction({
+                page: pagination.page,
+                perPage: pagination.perPage,
+              }),
+            ];
+          }),
+          catchError((error) => {
+            return of(
+              JobActions.addNewJobFailureAction({ error: error.message })
+            );
+          })
+        )
+      )
+    )
+  );
 }

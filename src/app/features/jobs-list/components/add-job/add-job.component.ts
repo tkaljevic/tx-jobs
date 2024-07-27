@@ -1,6 +1,18 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -25,10 +37,10 @@ import { JobsHttpService } from '@shared-services';
   ],
   templateUrl: './add-job.component.html',
   styleUrl: './add-job.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddJobComponent implements OnInit {
-  public jobForm: FormGroup
+  public jobForm: FormGroup;
   public currentSkills = signal<string[]>([]);
 
   private formBuilder = inject(FormBuilder);
@@ -47,7 +59,7 @@ export class AddJobComponent implements OnInit {
       title: new FormControl('', [Validators.required]),
       description: new FormControl('', []),
       skills: new FormControl([''], []),
-      status: new FormControl('', [Validators.required])
+      status: new FormControl('', [Validators.required]),
     });
   }
 
@@ -56,7 +68,7 @@ export class AddJobComponent implements OnInit {
   //#region UI Methods
 
   onRemoveSkill(skillName: string) {
-    this.currentSkills.update(keywords => {
+    this.currentSkills.update((keywords) => {
       const index = keywords.indexOf(skillName);
       if (index < 0) {
         return keywords;
@@ -69,23 +81,13 @@ export class AddJobComponent implements OnInit {
   onAddSkill(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (value) {
-      this.currentSkills.update(keywords => [...keywords, value]);
+      this.currentSkills.update((keywords) => [...keywords, value]);
     }
     event.chipInput!.clear();
   }
 
   onSave(): void {
-    this.jobsHttpService.addJob({
-      description: this.jobForm.value.description,
-      status: this.jobForm.value.status,
-      title: this.jobForm.value.title,
-      skills: this.currentSkills()
-    }).pipe(
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe({
-      next: (job) => { this.dialogRef.close(job) },
-      error: () => { this.initForm() }, // TODO: Read Error from Store in a separate component, make that component's instance in app.component
-    });
+    this.dialogRef.close(this.jobForm.value);
   }
 
   //#endregion

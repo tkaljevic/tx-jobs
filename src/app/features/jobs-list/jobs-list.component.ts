@@ -142,15 +142,8 @@ export class JobsListComponent implements OnInit {
     this.pagination$.next(data);
   };
 
-  private handleNewJob = (): void => {
-    this.store.dispatch(
-      JobActions.loadJobsAction({
-        page: this.currentPagination$.value.page,
-        perPage: this.currentPagination$.value.perPage,
-      })
-    );
-    // TODO: When a job ad is published, an invoice should be created.
-    this.toasterService.showSuccess('Job has been created successfully');
+  private handleNewJob = (job: Partial<JobAd>): void => {
+    this.store.dispatch(JobActions.addNewJobAction({ job }));
   };
 
   private handleCurrentPagination = (pagination: CurrentPagination): void => {
