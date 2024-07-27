@@ -109,5 +109,12 @@ export const jobReducer = createReducer(
       success: '',
       warning: '',
     },
+  })),
+  on(JobActions.showFilteredJobsAction, (state, action) => ({
+    ...state,
+    jobsData: {
+      ...state.jobsData,
+      data: [...action.jobs],
+    },
   }))
 );

@@ -33,7 +33,6 @@ import { JobAdStatus } from '@app-models';
     MatChipsModule,
     MatIconModule,
     MatInputModule,
-    MatInputModule,
     MatSelectModule,
   ],
   templateUrl: './add-job.component.html',

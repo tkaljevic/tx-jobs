@@ -68,3 +68,13 @@ export const updateJobStatusFailureAction = createAction(
   '[Jobs] Update status failure',
   props<{ error: string }>()
 );
+
+export const searchJobsAction = createAction(
+  '[Jobs] Search',
+  props<{ term: string }>()
+);
+
+export const showFilteredJobsAction = createAction(
+  '[Jobs] Display Filtered Jobs',
+  props<{ jobs: JobAd[] }>()
+);

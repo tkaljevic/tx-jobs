@@ -19,6 +19,7 @@ import { BehaviorSubject, filter, first } from 'rxjs';
 import * as JobActions from '../../core/store/actions/job.actions';
 import * as JobSelectors from '../../core/store/selectors/job.selectors';
 import { AddJobComponent } from './components/add-job/add-job.component';
+import { FilterJobsComponent } from './components/filter-jobs/filter-jobs.component';
 import { JobActionsComponent } from './components/job-actions/job-actions.component';
 import { MobileMenuComponent } from './components/mobile-menu/mobile-menu.component';
 
@@ -35,6 +36,7 @@ import { MobileMenuComponent } from './components/mobile-menu/mobile-menu.compon
     JobActionsComponent,
     MatPaginatorModule,
     MatDialogModule,
+    FilterJobsComponent,
   ],
   templateUrl: './jobs-list.component.html',
   styleUrl: './jobs-list.component.scss',
