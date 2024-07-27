@@ -1,5 +1,5 @@
 <form [formGroup]="jobForm">
-  <h2 mat-dialog-title>Add a new Job</h2>
+  <h2 mat-dialog-title>{{ mode === "add" ? "Add new" : "Edit" }} job</h2>
   <mat-dialog-content class="mat-typography">
     <div class="form-item">
       <mat-form-field>
@@ -17,7 +17,7 @@
 
     <div class="form-item">
       <mat-form-field>
-        <mat-label>Skills - press Enter to add</mat-label>
+        <mat-label>Skills</mat-label>
         <mat-chip-grid
           #reactiveChipGrid
           aria-label="Enter skills"
@@ -37,6 +37,7 @@
           [matChipInputFor]="reactiveChipGrid"
           (matChipInputTokenEnd)="onAddSkill($event)"
         />
+        <mat-hint>Press Enter to add skill</mat-hint>
       </mat-form-field>
     </div>
 
@@ -45,7 +46,9 @@
         <mat-label>Status</mat-label>
         <mat-select formControlName="status">
           @for(status of jobStatuses; track status) {
-          <mat-option [value]="status">{{ status | titlecase }}</mat-option>
+          <mat-option [value]="status" selected="currentJobStatus">
+            {{ status | titlecase }}
+          </mat-option>
           }
         </mat-select>
       </mat-form-field>

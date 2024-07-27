@@ -41,5 +41,9 @@ export class MobileMenuComponent {
     this.dialogUtilityService.listInvoices(this.job);
   }
 
+  onEdit() {
+    this.dialogUtilityService.editJob(this.job);
+  }
+
   //#endregion
 }

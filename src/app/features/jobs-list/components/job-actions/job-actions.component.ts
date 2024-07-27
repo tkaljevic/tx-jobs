@@ -38,5 +38,9 @@ export class JobActionsComponent {
     this.dialogUtilityService.listInvoices(this.job);
   }
 
+  onEdit(): void {
+    this.dialogUtilityService.editJob(this.job);
+  }
+
   //#endregion
 }

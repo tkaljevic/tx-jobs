@@ -78,3 +78,18 @@ export const showFilteredJobsAction = createAction(
   '[Jobs] Display Filtered Jobs',
   props<{ jobs: JobAd[] }>()
 );
+
+export const jobUpdateAction = createAction(
+  '[Jobs] Update Job',
+  props<{ job: JobAd }>()
+);
+
+export const jobUpdateSuccessAction = createAction(
+  '[Jobs] Update Job Success',
+  props<{ job: JobAd }>()
+);
+
+export const jobUpdateFailureAction = createAction(
+  '[Jobs] Update Job Failure',
+  props<{ error: string }>()
+);

@@ -118,7 +118,7 @@ export class JobEffects {
         this.store.pipe(select(JobSelectors.currentPaginationSelector))
       ),
       mergeMap(([action, pagination]) =>
-        this.jobsHttpService.updateJobStatus(action.job).pipe(
+        this.jobsHttpService.updateJob(action.job).pipe(
           concatMap(() => {
             const actions: Action[] = [
               JobActions.updateJobStatusSuccessAction(),
@@ -192,6 +192,43 @@ export class JobEffects {
           })
         );
       })
+    )
+  );
+
+  updateJobEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(JobActions.jobUpdateAction),
+      withLatestFrom(
+        this.store.pipe(select(JobSelectors.currentPaginationSelector))
+      ),
+      mergeMap(([action, pagination]) =>
+        this.jobsHttpService.updateJob(action.job).pipe(
+          concatMap((job) => {
+            const actions: Action[] = [
+              JobActions.jobUpdateSuccessAction({ job }),
+              JobActions.loadJobsAction({
+                page: pagination.page,
+                perPage: pagination.perPage,
+              }),
+            ];
+            if (action.job.status === 'published') {
+              actions.push(
+                InvoiceActions.createInvoiceAction({
+                  invoice: this.getRandomInvoice(action.job),
+                })
+              );
+            }
+            return actions;
+          }),
+          catchError((error) => {
+            return of(
+              JobActions.jobUpdateFailureAction({
+                error: error.message,
+              })
+            );
+          })
+        )
+      )
     )
   );
 

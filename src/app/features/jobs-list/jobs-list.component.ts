@@ -123,7 +123,9 @@ export class JobsListComponent implements OnInit {
   }
 
   onAddJob(): void {
-    const addJobRef = this.dialog.open(AddJobComponent);
+    const addJobRef = this.dialog.open(AddJobComponent, {
+      data: {},
+    });
     addJobRef
       .afterClosed()
       .pipe(filter((response) => !!response))

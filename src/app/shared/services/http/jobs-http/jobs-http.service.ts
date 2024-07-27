@@ -32,7 +32,7 @@ export class JobsHttpService extends CoreHttpService {
    * Create a new Job.
    *
    * @param job Job to be saved
-   * @returns Job created
+   * @returns Observable<JobAd> - Job created
    */
   addJob(job: Partial<JobAd>): Observable<JobAd> {
     return this.post<JobAd>('jobs', job);
@@ -48,7 +48,14 @@ export class JobsHttpService extends CoreHttpService {
     return this.delete<JobAd>(`jobs/${jobId}?_dependent=invoices`);
   }
 
-  updateJobStatus(job: JobAd): Observable<JobAd> {
+  /**
+   * Update job by providing new property values.
+   *
+   *
+   * @param job Job to be updated
+   * @returns Observable<JobAd> - updated value
+   */
+  updateJob(job: JobAd): Observable<JobAd> {
     return this.put<JobAd>(`jobs/${job.id}`, { ...job });
   }
 }
