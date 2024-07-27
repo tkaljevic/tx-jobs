@@ -1,11 +1,14 @@
 {
   "jobs": [
     {
-      "id": "4dc6",
-      "description": "first desc",
-      "status": "published",
-      "title": "JOB LETTER",
-      "skills": []
+      "title": "JOB LETTER2",
+      "description": "first desc2",
+      "skills": [
+        "TEST",
+        "pest"
+      ],
+      "status": "draft",
+      "id": "4dc6"
     },
     {
       "id": "a579",
@@ -41,6 +44,22 @@
       "status": "draft",
       "title": "Mount",
       "skills": []
+    },
+    {
+      "id": "6da3",
+      "title": "TOMA",
+      "description": "TOMA",
+      "skills": [],
+      "status": "draft"
+    },
+    {
+      "id": "741b",
+      "title": "asdadd",
+      "description": "asdad",
+      "skills": [
+        "asdsa"
+      ],
+      "status": "draft"
     }
   ],
   "invoices": [

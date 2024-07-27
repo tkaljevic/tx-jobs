@@ -7,7 +7,6 @@ import {
   signal,
 } from '@angular/core';
 import {
-  FormBuilder,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -15,12 +14,16 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { JobAdStatus } from '@app-models';
+import { JobAd, JobAdStatus } from '@app-models';
 @Component({
   selector: 'app-add-job',
   standalone: true,
@@ -40,25 +43,62 @@ import { JobAdStatus } from '@app-models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddJobComponent implements OnInit {
+  //#region Component Props
+
   public jobForm: FormGroup;
   public currentSkills = signal<string[]>([]);
   public jobStatuses: JobAdStatus[] = ['archived', 'draft', 'published'];
+  public mode: 'add' | 'edit';
+  public currentJobStatus: JobAdStatus | null = null;
 
-  private formBuilder = inject(FormBuilder);
+  public data = inject(MAT_DIALOG_DATA);
   private dialogRef = inject(MatDialogRef<AddJobComponent>);
 
+  //#endregion
+
+  //#region Lifecycle hooks
+
   ngOnInit(): void {
+    this.initMode();
+    this.initSkills();
+    this.initStatus();
     this.initForm();
   }
 
+  //#endregion
+
   //#region Init
 
+  private initMode() {
+    this.mode = this.data && this.data.job ? 'edit' : 'add';
+  }
+
+  private initSkills() {
+    if (this.mode === 'edit') {
+      this.currentSkills.set(this.data.job.skills);
+    }
+  }
+
+  private initStatus() {
+    this.currentJobStatus = this.mode === 'edit' ? this.data.job.status : null;
+  }
+
   private initForm(): void {
-    this.jobForm = this.formBuilder.group({
-      title: new FormControl('', [Validators.required]),
-      description: new FormControl('', [Validators.required]),
-      skills: new FormControl([''], []),
-      status: new FormControl('', [Validators.required]),
+    this.jobForm = new FormGroup({
+      title: new FormControl(this.mode === 'add' ? '' : this.data.job.title, [
+        Validators.required,
+      ]),
+      description: new FormControl(
+        this.mode === 'add' ? '' : this.data.job.description,
+        [Validators.required]
+      ),
+      skills: new FormControl(
+        this.mode === 'add' ? [] : this.data.job.skills,
+        []
+      ),
+      status: new FormControl(this.mode === 'add' ? '' : this.data.job.status, [
+        Validators.required,
+      ]),
     });
   }
 
@@ -67,26 +107,31 @@ export class AddJobComponent implements OnInit {
   //#region UI Methods
 
   onRemoveSkill(skillName: string) {
-    this.currentSkills.update((keywords) => {
-      const index = keywords.indexOf(skillName);
+    this.currentSkills.update((currentSkills) => {
+      const index = currentSkills.indexOf(skillName);
       if (index < 0) {
-        return keywords;
+        return currentSkills;
       }
-      keywords.splice(index, 1);
-      return [...keywords];
+      const allSkills = [...currentSkills];
+      allSkills.splice(index, 1);
+      return [...allSkills];
     });
   }
 
   onAddSkill(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (value) {
-      this.currentSkills.update((keywords) => [...keywords, value]);
+      this.currentSkills.update((currentSkills) => [...currentSkills, value]);
     }
     event.chipInput!.clear();
   }
 
   onSave(): void {
-    this.dialogRef.close(this.jobForm.value);
+    const job = { ...this.jobForm.value } as JobAd;
+    if (this.mode === 'edit') {
+      job.id = this.data.job.id;
+    }
+    this.dialogRef.close(job);
   }
 
   //#endregion

@@ -116,5 +116,21 @@ export const jobReducer = createReducer(
       ...state.jobsData,
       data: [...action.jobs],
     },
+  })),
+  on(JobActions.jobUpdateSuccessAction, (state, action) => ({
+    ...state,
+    message: {
+      success: `Job ${action.job.title} has been updated`,
+      error: '',
+      warning: '',
+    },
+  })),
+  on(JobActions.jobUpdateFailureAction, (state, action) => ({
+    ...state,
+    message: {
+      error: action.error,
+      success: '',
+      warning: '',
+    },
   }))
 );

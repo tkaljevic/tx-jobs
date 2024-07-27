@@ -3,7 +3,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { JobAd } from '@app-models';
 import { Store } from '@ngrx/store';
-import { filter } from 'rxjs';
+import { filter, map } from 'rxjs';
+import { AddJobComponent } from 'src/app/features/jobs-list/components/add-job/add-job.component';
 import { DeleteJobComponent } from 'src/app/features/jobs-list/components/delete-job/delete-job.component';
 import { ListInvoicesComponent } from 'src/app/features/jobs-list/components/list-invoices/list-invoices.component';
 import { UpdateStatusComponent } from 'src/app/features/jobs-list/components/update-status/update-status.component';
@@ -51,5 +52,24 @@ export class DialogUtilityService {
     this.dialog.open(ListInvoicesComponent, {
       data: { job },
     });
+  }
+
+  editJob(job: JobAd) {
+    const updateRef = this.dialog.open(AddJobComponent, {
+      data: {
+        job,
+      },
+    });
+
+    updateRef
+      .afterClosed()
+      .pipe(
+        filter((job) => !!job),
+        map((job) => job as JobAd),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((job) =>
+        this.store.dispatch(JobActions.jobUpdateAction({ job }))
+      );
   }
 }
