@@ -38,11 +38,11 @@ import { JobAd, JobAdStatus } from '@app-models';
     MatInputModule,
     MatSelectModule,
   ],
-  templateUrl: './add-job.component.html',
-  styleUrl: './add-job.component.scss',
+  templateUrl: './add-edit-job.component.html',
+  styleUrl: './add-edit-job.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddJobComponent implements OnInit {
+export class AddEditJobComponent implements OnInit {
   //#region Component Props
 
   public jobForm: FormGroup;
@@ -52,7 +52,7 @@ export class AddJobComponent implements OnInit {
   public currentJobStatus: JobAdStatus | null = null;
 
   public data = inject(MAT_DIALOG_DATA);
-  private dialogRef = inject(MatDialogRef<AddJobComponent>);
+  private dialogRef = inject(MatDialogRef<AddEditJobComponent>);
 
   //#endregion
 

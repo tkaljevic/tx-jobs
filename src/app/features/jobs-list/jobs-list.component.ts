@@ -18,7 +18,7 @@ import { Store } from '@ngrx/store';
 import { BehaviorSubject, filter, first } from 'rxjs';
 import * as JobActions from '../../core/store/actions/job.actions';
 import * as JobSelectors from '../../core/store/selectors/job.selectors';
-import { AddJobComponent } from './components/add-job/add-job.component';
+import { AddEditJobComponent } from './components/add-edit-job/add-edit-job.component';
 import { FilterJobsComponent } from './components/filter-jobs/filter-jobs.component';
 import { JobActionsComponent } from './components/job-actions/job-actions.component';
 import { MobileMenuComponent } from './components/mobile-menu/mobile-menu.component';
@@ -123,7 +123,7 @@ export class JobsListComponent implements OnInit {
   }
 
   onAddJob(): void {
-    const addJobRef = this.dialog.open(AddJobComponent, {
+    const addJobRef = this.dialog.open(AddEditJobComponent, {
       data: {},
     });
     addJobRef
