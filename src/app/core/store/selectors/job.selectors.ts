@@ -1,17 +1,17 @@
-import { JobAd, JobState, Pagination } from "@app-models";
-import { createFeatureSelector, createSelector } from "@ngrx/store";
+import { CurrentPagination, JobAd, JobState, Pagination } from '@app-models';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 export const jobsFeatureSelector = createFeatureSelector<JobState>('jobs');
 
 export const allJobsSelector = createSelector(
   jobsFeatureSelector,
   (state: JobState): JobAd[] => state.jobsData.data
-)
+);
 
 export const jobsErrorSelector = createSelector(
   jobsFeatureSelector,
   (state: JobState): string => state.error
-)
+);
 
 export const jobsPaginationSelector = createSelector(
   jobsFeatureSelector,
@@ -19,4 +19,9 @@ export const jobsPaginationSelector = createSelector(
     const { first, items, last, next, pages, prev } = state.jobsData;
     return { first, items, last, next, pages, prev };
   }
-)
+);
+
+export const currentPaginationSelector = createSelector(
+  jobsFeatureSelector,
+  (state: JobState): CurrentPagination => state.currentPagination
+);

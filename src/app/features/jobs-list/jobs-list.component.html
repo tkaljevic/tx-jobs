@@ -30,11 +30,11 @@
     </div>
   </mat-card-content>
 </mat-card>
-} @if((pagination$ | async); as pagination) {
+} @if((pagination$ | async) && (currentPagination$ | async)) {
 <div class="pagination">
   <mat-paginator
-    [length]="pagination.items"
-    [pageSize]="perPage"
+    [length]="(pagination$ | async)?.items"
+    [pageSize]="(currentPagination$ | async)?.perPage"
     [pageSizeOptions]="[3, 5, 10]"
     (page)="onPaginationChange($event)"
     aria-label="Select page"
