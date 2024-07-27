@@ -234,7 +234,7 @@ export class JobEffects {
 
   getRandomInvoice(job: JobAd): Omit<Invoice, 'id'> {
     const invoiceDueDate = new Date();
-    invoiceDueDate.setMonth(invoiceDueDate.getMonth() + 2);
+    invoiceDueDate.setMonth(invoiceDueDate.getMonth() + 3);
     invoiceDueDate.setDate(0);
     return {
       amount: Math.floor(Math.random() * (1000 - 100 + 1)) + 100,
