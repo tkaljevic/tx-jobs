@@ -14,7 +14,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { CurrentPagination, JobAd, Pagination } from '@app-models';
-import { ToasterService } from '@core-services';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, filter, first } from 'rxjs';
 import * as JobActions from '../../core/store/actions/job.actions';
@@ -53,7 +52,6 @@ export class JobsListComponent implements OnInit {
   private store = inject(Store);
   private destroyRef = inject(DestroyRef);
   private dialog = inject(MatDialog);
-  private toasterService = inject(ToasterService);
 
   //#endregion
 
