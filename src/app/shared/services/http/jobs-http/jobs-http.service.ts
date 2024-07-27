@@ -41,6 +41,6 @@ export class JobsHttpService extends CoreHttpService {
    * @returns Observable<JobAd>
    */
   deleteJob(jobId: string): Observable<JobAd> {
-    return this.delete<JobAd>(`jobs/${jobId}`);
+    return this.delete<JobAd>(`jobs/${jobId}?_dependent=invoices`);
   }
 }
