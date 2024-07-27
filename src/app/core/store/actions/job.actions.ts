@@ -19,6 +19,7 @@ export const deleteJobAction = createAction(
   props<{ jobId: string }>()
 );
 export const deleteJobSuccessAction = createAction('[Jobs] Delete job success');
+
 export const deleteJobFailureAction = createAction(
   '[Jobs] Delete job failure',
   props<{ error: string }>()

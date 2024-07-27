@@ -3,9 +3,17 @@ import { ToasterService } from '@core-services';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { JobsHttpService } from '@shared-services';
-import { catchError, map, mergeMap, of, tap, withLatestFrom } from 'rxjs';
+import {
+  catchError,
+  concatMap,
+  map,
+  mergeMap,
+  of,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 import * as JobActions from '../actions/job.actions';
-import { currentPaginationSelector } from '../selectors/job.selectors';
+import * as JobSelectors from '../selectors/job.selectors';
 
 @Injectable()
 export class JobEffects {
@@ -33,7 +41,9 @@ export class JobEffects {
   deleteJobsEffect$ = createEffect(() =>
     this.actions$.pipe(
       ofType(JobActions.deleteJobAction),
-      withLatestFrom(this.store.pipe(select(currentPaginationSelector))),
+      withLatestFrom(
+        this.store.pipe(select(JobSelectors.currentPaginationSelector))
+      ),
       mergeMap(([action, pagination]) =>
         this.jobsHttpService.deleteJob(action.jobId).pipe(
           tap((deletedJob) =>
@@ -41,19 +51,16 @@ export class JobEffects {
               `Successfully deleted ${deletedJob.title}`
             )
           ),
-          map(() => JobActions.deleteJobSuccessAction()),
-          map(() =>
+          concatMap(() => [
+            JobActions.deleteJobSuccessAction(),
             JobActions.loadJobsAction({
               page: pagination.page,
               perPage: pagination.perPage,
-            })
-          ),
-
-          catchError((error) => {
-            return of(
-              JobActions.deleteJobFailureAction({ error: error.message })
-            );
-          })
+            }),
+          ]),
+          catchError((error) =>
+            of(JobActions.deleteJobFailureAction({ error: error.message }))
+          )
         )
       )
     )

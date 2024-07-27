@@ -16,7 +16,7 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { CurrentPagination, JobAd, Pagination } from '@app-models';
 import { ToasterService } from '@core-services';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject, filter } from 'rxjs';
+import { BehaviorSubject, filter, first } from 'rxjs';
 import * as JobActions from '../../core/store/actions/job.actions';
 import * as JobSelectors from '../../core/store/selectors/job.selectors';
 import { AddJobComponent } from './components/add-job/add-job.component';
@@ -61,8 +61,9 @@ export class JobsListComponent implements OnInit {
 
   ngOnInit(): void {
     this.initPaginator();
-    this.initJobs();
+    this.initCurrentPagination();
     this.initJobsSubscription();
+    this.initJobs();
   }
 
   //#endregion
@@ -70,6 +71,17 @@ export class JobsListComponent implements OnInit {
   //#region Init
 
   private initJobs(): void {
+    this.store
+      .select(JobSelectors.currentPaginationSelector)
+      .pipe(
+        filter((x) => !!x.page && !!x.perPage),
+        first(),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(this.handleInitialJobLoad);
+  }
+
+  private initCurrentPagination(): void {
     this.store
       .select(JobSelectors.currentPaginationSelector)
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -95,10 +107,13 @@ export class JobsListComponent implements OnInit {
   //#region UI Methods
 
   onPaginationChange(event: PageEvent) {
-    this.currentPagination$.next({
-      page: event.pageIndex + 1,
-      perPage: event.pageSize,
-    });
+    this.store.dispatch(
+      JobActions.setCurrentPagination({
+        page: event.pageIndex + 1,
+        perPage: event.pageSize,
+      })
+    );
+
     this.store.dispatch(
       JobActions.loadJobsAction({
         page: event.pageIndex + 1,
@@ -140,9 +155,12 @@ export class JobsListComponent implements OnInit {
 
   private handleCurrentPagination = (pagination: CurrentPagination): void => {
     this.currentPagination$.next(pagination);
+  };
+
+  private handleInitialJobLoad = (pagination: CurrentPagination): void => {
     this.store.dispatch(
       JobActions.loadJobsAction({
-        page: pagination.page,
+        page: 1,
         perPage: pagination.perPage,
       })
     );
