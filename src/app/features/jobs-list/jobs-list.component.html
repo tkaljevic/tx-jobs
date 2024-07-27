@@ -36,6 +36,7 @@
     [length]="(pagination$ | async)?.items"
     [pageSize]="(currentPagination$ | async)?.perPage"
     [pageSizeOptions]="[3, 5, 10]"
+    [pageIndex]="((currentPagination$ | async)?.page || 1) - 1"
     (page)="onPaginationChange($event)"
     aria-label="Select page"
   >
