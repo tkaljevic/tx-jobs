@@ -24,6 +24,10 @@ export class JobsHttpService extends CoreHttpService {
     );
   }
 
+  getAllJobs(): Observable<JobAdDto[]> {
+    return this.get<JobAdDto[]>('jobs');
+  }
+
   /**
    * Create a new Job.
    *

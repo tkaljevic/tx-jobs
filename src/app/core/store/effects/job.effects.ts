@@ -40,6 +40,10 @@ export class JobEffects {
       mergeMap(([action, pagination, metaPagination]) =>
         this.jobsHttpService.deleteJob(action.jobId).pipe(
           concatMap(() => {
+            /**
+             * Corner case - Deleting the last element
+             * which require return to the previous page.
+             */
             if (
               metaPagination.next === null &&
               metaPagination.items === pagination.perPage + 1
@@ -141,6 +145,53 @@ export class JobEffects {
           })
         )
       )
+    )
+  );
+
+  searchEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(JobActions.searchJobsAction),
+      withLatestFrom(
+        this.store.pipe(select(JobSelectors.currentPaginationSelector))
+      ),
+      mergeMap(([action, pagination]) => {
+        const term = Object.values(action.term)[0].toLowerCase();
+        if (!term.length) {
+          return of(
+            JobActions.loadJobsAction({
+              page: pagination.page,
+              perPage: pagination.perPage,
+            })
+          );
+        }
+        /**
+         * AD:
+         * Potential bug - Filtered jobs are not aligned with the pagination displayed on the page.
+         * However, json-server filtering did not work as expected, which is the key reason for
+         * this solution involving local data filtering.
+         */
+        return this.jobsHttpService.getAllJobs().pipe(
+          map((allJobs) => {
+            return allJobs.filter(
+              (job) =>
+                job.title.toLowerCase().includes(term) ||
+                job.description.toLowerCase().includes(term) ||
+                job.skills.some((skill) =>
+                  skill.toLowerCase().includes(term)
+                ) ||
+                job.status.toLowerCase().includes(term)
+            );
+          }),
+          map((jobs) => JobActions.showFilteredJobsAction({ jobs })),
+          catchError((error) => {
+            return of(
+              JobActions.setErrorMessage({
+                message: error.message,
+              })
+            );
+          })
+        );
+      })
     )
   );
 

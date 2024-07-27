@@ -1,11 +1,13 @@
 <div class="row" class="top-menu">
-  <div class="col-xs-6">
+  <div class="col-xs-4">
     <button mat-flat-button color="primary" (click)="onAddJob()">
       Add Job
     </button>
   </div>
-  <div class="col-xs-6">
-    <div class="filter-wrapper">FILTER</div>
+  <div class="col-xs-8">
+    <div class="filter-wrapper">
+      <app-filter-jobs />
+    </div>
   </div>
 </div>
 @if((jobs$ | async)?.length) {
