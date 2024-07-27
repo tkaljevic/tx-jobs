@@ -1,4 +1,4 @@
-import { JobAdDto, PaginatedResponse } from '@app-models';
+import { JobAd, JobAdDto, PaginatedResponse } from '@app-models';
 import { createAction, props } from '@ngrx/store';
 
 export const loadJobsAction = createAction(
@@ -28,4 +28,19 @@ export const deleteJobFailureAction = createAction(
 export const setCurrentPagination = createAction(
   '[Jobs] Set current pagination',
   props<{ page: number; perPage: number }>()
+);
+
+export const addNewJobAction = createAction(
+  '[Jobs] Add new job',
+  props<{ job: Partial<JobAd> }>()
+);
+
+export const addJobSuccessAction = createAction(
+  '[Jobs] Add new job success',
+  props<{ job: JobAd }>()
+);
+
+export const addNewJobFailureAction = createAction(
+  '[Jobs] Add new job failure',
+  props<{ error: string }>()
 );
