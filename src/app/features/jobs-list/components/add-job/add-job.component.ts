@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
   inject,
   OnInit,
   signal,
@@ -20,7 +19,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { JobsHttpService } from '@shared-services';
 @Component({
   selector: 'app-add-job',
   standalone: true,
@@ -44,8 +42,6 @@ export class AddJobComponent implements OnInit {
   public currentSkills = signal<string[]>([]);
 
   private formBuilder = inject(FormBuilder);
-  private jobsHttpService = inject(JobsHttpService);
-  private destroyRef = inject(DestroyRef);
   private dialogRef = inject(MatDialogRef<AddJobComponent>);
 
   ngOnInit(): void {
