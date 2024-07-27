@@ -43,4 +43,8 @@ export class JobsHttpService extends CoreHttpService {
   deleteJob(jobId: string): Observable<JobAd> {
     return this.delete<JobAd>(`jobs/${jobId}?_dependent=invoices`);
   }
+
+  updateJobStatus(job: JobAd): Observable<JobAd> {
+    return this.put<JobAd>(`jobs/${job.id}`, { ...job });
+  }
 }

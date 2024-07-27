@@ -50,7 +50,21 @@ export const setErrorMessage = createAction(
   props<{ message: string }>()
 );
 
-export const setSuccessMessage = createAction(
+export const setSuccessMessageAction = createAction(
   '[Toaster] Set success message',
   props<{ message: string }>()
+);
+
+export const updateJobStatusAction = createAction(
+  '[Jobs] Update status',
+  props<{ job: JobAd }>()
+);
+
+export const updateJobStatusSuccessAction = createAction(
+  '[Jobs] Update status success'
+);
+
+export const updateJobStatusFailureAction = createAction(
+  '[Jobs] Update status failure',
+  props<{ error: string }>()
 );

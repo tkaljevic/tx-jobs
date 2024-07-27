@@ -6,7 +6,10 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { JobAd } from '@app-models';
-import { JobDeleteUtilityService } from '@shared-services';
+import {
+  JobDeleteUtilityService,
+  UpdateStatusUtilityService,
+} from '@shared-services';
 
 @Component({
   selector: 'app-job-actions',
@@ -21,6 +24,7 @@ export class JobActionsComponent {
 
   @Input() job: JobAd;
   private jobDeleteUtilityService = inject(JobDeleteUtilityService);
+  private updateStatusService = inject(UpdateStatusUtilityService);
 
   //#endregion
 
@@ -28,6 +32,10 @@ export class JobActionsComponent {
 
   onDelete(): void {
     this.jobDeleteUtilityService.deleteJob(this.job);
+  }
+
+  onChangeStatus(): void {
+    this.updateStatusService.updateStatus(this.job);
   }
 
   //#endregion

@@ -1,5 +1,7 @@
 <div class="job-actions">
-  <button mat-flat-button color="primary">Status</button>
+  <button mat-flat-button color="primary" (click)="onChangeStatus()">
+    Status
+  </button>
   <button mat-flat-button color="primary">Edit</button>
   <button mat-raised-button color="primary">Invoices</button>
   <button mat-flat-button color="warn" (click)="onDelete()">Delete</button>

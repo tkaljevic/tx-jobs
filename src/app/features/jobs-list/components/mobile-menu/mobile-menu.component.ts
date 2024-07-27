@@ -9,7 +9,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { JobAd } from '@app-models';
-import { JobDeleteUtilityService } from '@shared-services';
+import {
+  JobDeleteUtilityService,
+  UpdateStatusUtilityService,
+} from '@shared-services';
 
 @Component({
   selector: 'app-mobile-menu',
@@ -25,6 +28,7 @@ export class MobileMenuComponent {
   @Input() job: JobAd;
 
   private deleteJobService = inject(JobDeleteUtilityService);
+  private updateStatusService = inject(UpdateStatusUtilityService);
 
   //#endregion
 
@@ -32,6 +36,10 @@ export class MobileMenuComponent {
 
   onDelete() {
     this.deleteJobService.deleteJob(this.job);
+  }
+
+  onChangeStatus() {
+    this.updateStatusService.updateStatus(this.job);
   }
 
   //#endregion

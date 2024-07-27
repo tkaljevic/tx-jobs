@@ -4,10 +4,9 @@ import { environment } from '@environment';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CoreHttpService {
-
   private http = inject(HttpClient);
   private apiUrl = environment.apiUrl;
 
@@ -21,6 +20,10 @@ export class CoreHttpService {
 
   protected put<T>(slug: string, body: unknown): Observable<T> {
     return this.http.put<T>(`${this.apiUrl}${slug}`, body);
+  }
+
+  protected patch<T>(slug: string, body: unknown): Observable<T> {
+    return this.http.patch<T>(`${this.apiUrl}${slug}`, body);
   }
 
   protected delete<T>(slug: string): Observable<T> {

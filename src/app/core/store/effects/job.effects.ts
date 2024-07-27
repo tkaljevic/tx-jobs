@@ -1,8 +1,10 @@
 import { inject, Injectable } from '@angular/core';
+import { Invoice, JobAd } from '@app-models';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
+import { Action, select, Store } from '@ngrx/store';
 import { JobsHttpService } from '@shared-services';
 import { catchError, concatMap, map, mergeMap, of, withLatestFrom } from 'rxjs';
+import * as InvoiceActions from '../actions/invoice.actions';
 import * as JobActions from '../actions/job.actions';
 import * as JobSelectors from '../selectors/job.selectors';
 
@@ -79,14 +81,21 @@ export class JobEffects {
       mergeMap(([action, pagination]) =>
         this.jobsHttpService.addJob(action.job).pipe(
           concatMap((job) => {
-            // TODO: Invoice add?
-            return [
+            const actions: Action[] = [
               JobActions.addJobSuccessAction({ job }),
               JobActions.loadJobsAction({
                 page: pagination.page,
                 perPage: pagination.perPage,
               }),
             ];
+            if (job.status === 'published') {
+              actions.push(
+                InvoiceActions.createInvoiceAction({
+                  invoice: this.getRandomInvoice(job),
+                })
+              );
+            }
+            return actions;
           }),
           catchError((error) => {
             return of(
@@ -97,4 +106,52 @@ export class JobEffects {
       )
     )
   );
+
+  updateStatusEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(JobActions.updateJobStatusAction),
+      withLatestFrom(
+        this.store.pipe(select(JobSelectors.currentPaginationSelector))
+      ),
+      mergeMap(([action, pagination]) =>
+        this.jobsHttpService.updateJobStatus(action.job).pipe(
+          concatMap(() => {
+            const actions: Action[] = [
+              JobActions.updateJobStatusSuccessAction(),
+              JobActions.loadJobsAction({
+                page: pagination.page,
+                perPage: pagination.perPage,
+              }),
+            ];
+            if (action.job.status === 'published') {
+              actions.push(
+                InvoiceActions.createInvoiceAction({
+                  invoice: this.getRandomInvoice(action.job),
+                })
+              );
+            }
+            return actions;
+          }),
+          catchError((error) => {
+            return of(
+              JobActions.updateJobStatusFailureAction({
+                error: error.message,
+              })
+            );
+          })
+        )
+      )
+    )
+  );
+
+  getRandomInvoice(job: JobAd): Omit<Invoice, 'id'> {
+    const invoiceDueDate = new Date();
+    invoiceDueDate.setMonth(invoiceDueDate.getMonth() + 2);
+    invoiceDueDate.setDate(0);
+    return {
+      amount: Math.floor(Math.random() * (1000 - 100 + 1)) + 100,
+      dueDate: invoiceDueDate,
+      jobAdId: job.id,
+    };
+  }
 }
