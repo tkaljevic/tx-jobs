@@ -6,10 +6,7 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { JobAd } from '@app-models';
-import {
-  JobDeleteUtilityService,
-  UpdateStatusUtilityService,
-} from '@shared-services';
+import { DialogUtilityService } from '@shared-services';
 
 @Component({
   selector: 'app-job-actions',
@@ -23,19 +20,22 @@ export class JobActionsComponent {
   //#region Component props
 
   @Input() job: JobAd;
-  private jobDeleteUtilityService = inject(JobDeleteUtilityService);
-  private updateStatusService = inject(UpdateStatusUtilityService);
+  private dialogUtilityService = inject(DialogUtilityService);
 
   //#endregion
 
   //#region UI Methods
 
   onDelete(): void {
-    this.jobDeleteUtilityService.deleteJob(this.job);
+    this.dialogUtilityService.deleteJob(this.job);
   }
 
   onChangeStatus(): void {
-    this.updateStatusService.updateStatus(this.job);
+    this.dialogUtilityService.updateStatus(this.job);
+  }
+
+  onListInvoices(): void {
+    this.dialogUtilityService.listInvoices(this.job);
   }
 
   //#endregion

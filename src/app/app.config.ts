@@ -13,7 +13,9 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { routes } from './app.routes';
 import { InvoiceEffects } from './core/store/effects/invoice.effects';
 import { JobEffects } from './core/store/effects/job.effects';
-import { jobReducer } from './core/store/reducers/job.reducer';
+// import { invoicesReducer } from './core/store/reducers/invoices.reducer';
+// import { jobReducer } from './core/store/reducers/job.reducer';
+import { reducers } from './core/store/reducers';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,7 +25,7 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([httpLoaderInterceptor, httpErrorInterceptor])
     ),
     provideAnimationsAsync(),
-    provideStore({ jobs: jobReducer }),
+    provideStore(reducers),
     provideEffects([JobEffects, InvoiceEffects]),
     provideStoreDevtools({
       logOnly: environment.production,

@@ -14,3 +14,18 @@ export const createInvoiceFailureAction = createAction(
   '[Invoice] Create failure',
   props<{ error: string }>()
 );
+
+export const getInvoicesAction = createAction(
+  '[Invoice] Get Invoices',
+  props<{ jobId: string }>()
+);
+
+export const getInvoicesSuccessAction = createAction(
+  '[Invoice] Get Invoices Success',
+  props<{ invoices: Invoice[] }>()
+);
+
+export const getInvoicesFailureAction = createAction(
+  '[Invoice] Get Invoices Failure',
+  props<{ error: string }>()
+);
