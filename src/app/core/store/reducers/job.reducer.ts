@@ -1,4 +1,9 @@
-import { JobAd, JobState, PaginatedResponse } from '@app-models';
+import {
+  JobAd,
+  JobState,
+  PaginatedResponse,
+  ToasterMessage,
+} from '@app-models';
 import { createReducer, on } from '@ngrx/store';
 import * as JobActions from '../actions/job.actions';
 
@@ -12,7 +17,7 @@ export const initialState: JobState = {
     pages: 1,
     prev: null,
   } as PaginatedResponse<JobAd>,
-  error: '',
+  message: {} as ToasterMessage,
   currentPagination: {
     page: 1,
     perPage: 5,
@@ -24,17 +29,60 @@ export const jobReducer = createReducer(
   on(JobActions.loadJobsSuccessAction, (state, { data }) => ({
     ...state,
     jobsData: data,
-    error: '',
   })),
-  on(JobActions.loadJobsFailureAction, (state, { error }) => ({
+  on(JobActions.loadJobsFailureAction, (state, action) => ({
     ...state,
-    error: error,
+    message: {
+      error: action.error,
+      success: '',
+      warning: '',
+    },
   })),
   on(JobActions.setCurrentPagination, (state, action) => ({
     ...state,
     currentPagination: {
       page: action.page,
       perPage: action.perPage,
+    },
+  })),
+  on(JobActions.setErrorMessage, (state, action) => ({
+    ...state,
+    message: {
+      error: action.message,
+      success: '',
+      warning: '',
+    },
+  })),
+  on(JobActions.deleteJobSuccessAction, (state) => ({
+    ...state,
+    message: {
+      error: '',
+      success: 'Successfully deleted job',
+      warning: '',
+    },
+  })),
+  on(JobActions.deleteJobFailureAction, (state, action) => ({
+    ...state,
+    message: {
+      error: action.error,
+      success: '',
+      warning: '',
+    },
+  })),
+  on(JobActions.addNewJobFailureAction, (state, action) => ({
+    ...state,
+    message: {
+      error: action.error,
+      success: '',
+      warning: '',
+    },
+  })),
+  on(JobActions.addJobSuccessAction, (state, action) => ({
+    ...state,
+    message: {
+      error: '',
+      warning: '',
+      success: `${action.job.title} has been created`,
     },
   }))
 );

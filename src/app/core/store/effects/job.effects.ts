@@ -1,17 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { ToasterService } from '@core-services';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { JobsHttpService } from '@shared-services';
-import {
-  catchError,
-  concatMap,
-  map,
-  mergeMap,
-  of,
-  tap,
-  withLatestFrom,
-} from 'rxjs';
+import { catchError, concatMap, map, mergeMap, of, withLatestFrom } from 'rxjs';
 import * as JobActions from '../actions/job.actions';
 import * as JobSelectors from '../selectors/job.selectors';
 
@@ -19,7 +10,6 @@ import * as JobSelectors from '../selectors/job.selectors';
 export class JobEffects {
   private actions$ = inject(Actions);
   private jobsHttpService = inject(JobsHttpService);
-  private toasterService = inject(ToasterService);
   private store = inject(Store);
 
   loadJobsEffect$ = createEffect(() =>
@@ -47,11 +37,6 @@ export class JobEffects {
       ),
       mergeMap(([action, pagination, metaPagination]) =>
         this.jobsHttpService.deleteJob(action.jobId).pipe(
-          tap((deletedJob) =>
-            this.toasterService.showSuccess(
-              `Successfully deleted ${deletedJob.title}`
-            )
-          ),
           concatMap(() => {
             if (
               metaPagination.next === null &&
@@ -94,7 +79,6 @@ export class JobEffects {
       mergeMap(([action, pagination]) =>
         this.jobsHttpService.addJob(action.job).pipe(
           concatMap((job) => {
-            this.toasterService.showSuccess('Job has been added');
             // TODO: Invoice add?
             return [
               JobActions.addJobSuccessAction({ job }),
