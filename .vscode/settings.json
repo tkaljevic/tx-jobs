@@ -1,13 +1,10 @@
 {
-  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.organizeImports": "always"
   },
   "workbench.editorAssociations": {
     "*.md": "vscode.markdown.preview.editor"
   },
-  "cSpell.words": [
-    "endregion",
-    "titlecase"
-  ]
+  "cSpell.words": ["endregion", "titlecase"],
+  "editor.formatOnSave": true
 }
