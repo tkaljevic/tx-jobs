@@ -8,13 +8,22 @@ export class ToasterService {
 
   showSuccess(message: string): void {
     this.snackBar.open(message, 'OK', { panelClass: 'success-snackbar' });
+    this.hideMessage();
   }
 
   showWarning(message: string): void {
     this.snackBar.open(message, 'OK', { panelClass: 'warning-snackbar' });
+    this.hideMessage();
   }
 
   showError(message: string): void {
     this.snackBar.open(message, 'OK', { panelClass: 'error-snackbar' });
+    this.hideMessage();
+  }
+
+  private hideMessage(): void {
+    setTimeout(() => {
+      this.snackBar._openedSnackBarRef?.dismiss();
+    }, 3_000);
   }
 }
