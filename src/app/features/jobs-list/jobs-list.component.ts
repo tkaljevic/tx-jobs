@@ -15,7 +15,14 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { CurrentPagination, JobAd, Pagination } from '@app-models';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject, filter, first } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  filter,
+  first,
+  map,
+  Observable,
+} from 'rxjs';
 import * as JobActions from '../../core/store/actions/job.actions';
 import * as JobSelectors from '../../core/store/selectors/job.selectors';
 import { AddEditJobComponent } from './components/add-edit-job/add-edit-job.component';
@@ -45,9 +52,11 @@ import { MobileMenuComponent } from './components/mobile-menu/mobile-menu.compon
 export class JobsListComponent implements OnInit {
   //#region Component props
 
-  public jobs$ = new BehaviorSubject<JobAd[]>([]);
-  public pagination$ = new BehaviorSubject<Pagination>({} as Pagination);
-  public currentPagination$ = new BehaviorSubject<CurrentPagination>(
+  public vm$: Observable<ViewModel>;
+
+  private jobs$ = new BehaviorSubject<JobAd[]>([]);
+  private pagination$ = new BehaviorSubject<Pagination>({} as Pagination);
+  private currentPagination$ = new BehaviorSubject<CurrentPagination>(
     {} as CurrentPagination
   );
 
@@ -64,11 +73,26 @@ export class JobsListComponent implements OnInit {
     this.initCurrentPagination();
     this.initJobsSubscription();
     this.initJobs();
+    this.initViewModel();
   }
 
   //#endregion
 
   //#region Init
+
+  private initViewModel(): void {
+    this.vm$ = combineLatest([
+      this.jobs$,
+      this.pagination$,
+      this.currentPagination$,
+    ]).pipe(
+      map(([jobs, pagination, currentPagination]) => ({
+        jobs,
+        pagination,
+        currentPagination,
+      }))
+    );
+  }
 
   private initJobs(): void {
     this.store
@@ -162,4 +186,10 @@ export class JobsListComponent implements OnInit {
   };
 
   //#endregion
+}
+
+interface ViewModel {
+  jobs: JobAd[];
+  pagination: Pagination;
+  currentPagination: CurrentPagination;
 }

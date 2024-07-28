@@ -10,9 +10,10 @@
     </div>
   </div>
 </div>
-@if((jobs$ | async)?.length) {
+
+@if(vm$ | async; as vm) { @if(vm.jobs.length) {
 <div class="row">&nbsp;</div>
-@for(job of (jobs$ | async); track job.id) {
+@for(job of vm.jobs; track job.id) {
 <mat-card appearance="outlined" class="job-item">
   <mat-card-content>
     <div class="row">
@@ -32,13 +33,13 @@
     </div>
   </mat-card-content>
 </mat-card>
-} @if((pagination$ | async) && (currentPagination$ | async)) {
+} @if((vm.pagination) && (vm.currentPagination)) {
 <div class="pagination">
   <mat-paginator
-    [length]="(pagination$ | async)?.items"
-    [pageSize]="(currentPagination$ | async)?.perPage"
+    [length]="vm.pagination.items"
+    [pageSize]="vm.currentPagination.perPage"
     [pageSizeOptions]="[3, 5, 10]"
-    [pageIndex]="((currentPagination$ | async)?.page || 1) - 1"
+    [pageIndex]="vm.currentPagination.page - 1"
     (page)="onPaginationChange($event)"
     aria-label="Select page"
   >
@@ -51,4 +52,4 @@
     <div class="no-jobs">No jobs to show.</div>
   </div>
 </div>
-}
+} }

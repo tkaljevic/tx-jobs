@@ -7,15 +7,17 @@
         "TEST",
         "pest"
       ],
-      "status": "draft",
+      "status": "published",
       "id": "4dc6"
     },
     {
-      "id": "a579",
-      "description": "dog is a 'good' friend",
-      "status": "draft",
       "title": "JOB DOG",
-      "skills": []
+      "description": "dog is a 'good' friend",
+      "skills": [
+        "afaeaf"
+      ],
+      "status": "draft",
+      "id": "a579"
     },
     {
       "id": "1559",
@@ -32,34 +34,13 @@
       "skills": []
     },
     {
-      "id": "2222",
-      "description": "DESCription",
-      "status": "draft",
       "title": "Lower case",
-      "skills": []
-    },
-    {
-      "id": "1111",
-      "description": "Device",
-      "status": "draft",
-      "title": "Mount",
-      "skills": []
-    },
-    {
-      "id": "6da3",
-      "title": "TOMA",
-      "description": "TOMA",
-      "skills": [],
-      "status": "draft"
-    },
-    {
-      "id": "741b",
-      "title": "asdadd",
-      "description": "asdad",
+      "description": "DESCriptions",
       "skills": [
-        "asdsa"
+        "asd"
       ],
-      "status": "draft"
+      "status": "draft",
+      "id": "2222"
     }
   ],
   "invoices": [
@@ -83,6 +64,13 @@
       "dueDate": "2024-08-31T16:14:07.705Z",
       "jobAdId": "1559",
       "jobId": "1559"
+    },
+    {
+      "id": "70b8",
+      "amount": 775,
+      "dueDate": "2024-09-30T20:44:57.024Z",
+      "jobAdId": "4dc6",
+      "jobId": "4dc6"
     }
   ]
 }
