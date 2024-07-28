@@ -92,10 +92,9 @@ export class AddEditJobComponent implements OnInit {
         this.mode === 'add' ? '' : this.data.job.description,
         [Validators.required]
       ),
-      skills: new FormControl(
-        this.mode === 'add' ? [] : this.data.job.skills,
-        []
-      ),
+      skills: new FormControl(this.mode === 'add' ? [] : this.data.job.skills, [
+        Validators.required,
+      ]),
       status: new FormControl(this.mode === 'add' ? '' : this.data.job.status, [
         Validators.required,
       ]),
@@ -114,6 +113,9 @@ export class AddEditJobComponent implements OnInit {
       }
       const allSkills = [...currentSkills];
       allSkills.splice(index, 1);
+      this.jobForm.patchValue({
+        skills: allSkills,
+      });
       return [...allSkills];
     });
   }
@@ -124,6 +126,9 @@ export class AddEditJobComponent implements OnInit {
       this.currentSkills.update((currentSkills) => [...currentSkills, value]);
     }
     event.chipInput!.clear();
+    this.jobForm.patchValue({
+      skills: this.currentSkills(),
+    });
   }
 
   onSave(): void {
