@@ -34,7 +34,7 @@ export class JobsHttpService extends CoreHttpService {
    * @param job Job to be saved
    * @returns Observable<JobAd> - Job created
    */
-  addJob(job: Partial<JobAd>): Observable<JobAd> {
+  addJob(job: JobAdDto): Observable<JobAd> {
     return this.post<JobAd>('jobs', job);
   }
 
@@ -55,7 +55,7 @@ export class JobsHttpService extends CoreHttpService {
    * @param job Job to be updated
    * @returns Observable<JobAd> - updated value
    */
-  updateJob(job: JobAd): Observable<JobAd> {
+  updateJob(job: JobAdDto): Observable<JobAd> {
     return this.put<JobAd>(`jobs/${job.id}`, { ...job });
   }
 }

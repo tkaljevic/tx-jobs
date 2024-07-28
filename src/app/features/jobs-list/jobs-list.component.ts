@@ -13,7 +13,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { CurrentPagination, JobAd, Pagination } from '@app-models';
+import { CurrentPagination, JobAd, JobAdDto, Pagination } from '@app-models';
 import { Store } from '@ngrx/store';
 import {
   BehaviorSubject,
@@ -152,7 +152,10 @@ export class JobsListComponent implements OnInit {
     });
     addJobRef
       .afterClosed()
-      .pipe(filter((response) => !!response))
+      .pipe(
+        filter((response) => !!response),
+        map((response) => ({ ...response } as JobAdDto))
+      )
       .subscribe(this.handleNewJob);
   }
 
@@ -168,7 +171,7 @@ export class JobsListComponent implements OnInit {
     this.pagination$.next(data);
   };
 
-  private handleNewJob = (job: Partial<JobAd>): void => {
+  private handleNewJob = (job: JobAdDto): void => {
     this.store.dispatch(JobActions.addNewJobAction({ job }));
   };
 
