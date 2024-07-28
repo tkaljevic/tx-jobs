@@ -1,7 +1,7 @@
-import { JobAd } from "./job.model";
+import { JobAd } from './job.model';
 
 export interface JobAdDto extends JobAd {
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   _embedded: unknown;
 }

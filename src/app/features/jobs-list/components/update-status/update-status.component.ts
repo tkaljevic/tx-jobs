@@ -15,7 +15,7 @@ import {
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { JobAd, JobAdStatus } from '@app-models';
+import { JobAdDto, JobAdStatus } from '@app-models';
 
 @Component({
   selector: 'app-update-status',
@@ -74,8 +74,10 @@ export class UpdateStatusComponent implements OnInit {
   }
 
   onSave(): void {
-    const job = { ...this.data.job } as JobAd;
+    const job = { ...this.data.job } as JobAdDto;
     job.status = this.status;
+    job.createdAt = this.data.job.createdAt;
+    job.updatedAt = new Date().toISOString();
     this.dialogRef.close(job);
   }
 

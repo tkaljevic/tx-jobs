@@ -23,7 +23,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { JobAd, JobAdStatus } from '@app-models';
+import { JobAdDto, JobAdStatus } from '@app-models';
 @Component({
   selector: 'app-add-job',
   standalone: true,
@@ -103,6 +103,21 @@ export class AddEditJobComponent implements OnInit {
 
   //#endregion
 
+  //#region Utilities
+
+  private convertFormValueToJob(): JobAdDto {
+    const job = { ...this.jobForm.value } as JobAdDto;
+    if (this.mode === 'edit') {
+      job.id = this.data.job.id;
+    }
+    const now = new Date().toISOString();
+    job.updatedAt = now;
+    job.createdAt = this.mode === 'edit' ? this.data.job.createdAt : now;
+    return job;
+  }
+
+  //#endregion
+
   //#region UI Methods
 
   onRemoveSkill(skillName: string) {
@@ -132,10 +147,7 @@ export class AddEditJobComponent implements OnInit {
   }
 
   onSave(): void {
-    const job = { ...this.jobForm.value } as JobAd;
-    if (this.mode === 'edit') {
-      job.id = this.data.job.id;
-    }
+    const job = this.convertFormValueToJob();
     this.dialogRef.close(job);
   }
 

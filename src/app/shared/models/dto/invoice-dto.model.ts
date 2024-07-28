@@ -1,7 +1,7 @@
 import { Invoice } from './invoice.model';
 
 export interface InvoiceDto extends Invoice {
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   _embedded: unknown;
 }

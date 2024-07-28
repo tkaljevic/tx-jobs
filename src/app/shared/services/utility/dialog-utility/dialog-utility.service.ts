@@ -1,7 +1,7 @@
 import { DestroyRef, inject, Injectable } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
-import { JobAd } from '@app-models';
+import { JobAd, JobAdDto } from '@app-models';
 import { Store } from '@ngrx/store';
 import { filter, map } from 'rxjs';
 import { AddEditJobComponent } from 'src/app/features/jobs-list/components/add-edit-job/add-edit-job.component';
@@ -41,9 +41,10 @@ export class DialogUtilityService {
       .afterClosed()
       .pipe(
         filter((response) => !!response),
+        map((response) => ({ ...response } as JobAdDto)),
         takeUntilDestroyed(this.destroyRef)
       )
-      .subscribe((job: JobAd) => {
+      .subscribe((job: JobAdDto) => {
         this.store.dispatch(JobActions.updateJobStatusAction({ job }));
       });
   }
@@ -65,7 +66,7 @@ export class DialogUtilityService {
       .afterClosed()
       .pipe(
         filter((job) => !!job),
-        map((job) => job as JobAd),
+        map((job) => job as JobAdDto),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe((job) =>

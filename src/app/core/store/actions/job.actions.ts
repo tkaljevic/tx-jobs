@@ -32,7 +32,7 @@ export const setCurrentPagination = createAction(
 
 export const addNewJobAction = createAction(
   '[Jobs] Add new job',
-  props<{ job: Partial<JobAd> }>()
+  props<{ job: JobAdDto }>()
 );
 
 export const addJobSuccessAction = createAction(
@@ -57,7 +57,7 @@ export const setSuccessMessageAction = createAction(
 
 export const updateJobStatusAction = createAction(
   '[Jobs] Update status',
-  props<{ job: JobAd }>()
+  props<{ job: JobAdDto }>()
 );
 
 export const updateJobStatusSuccessAction = createAction(
@@ -81,7 +81,7 @@ export const showFilteredJobsAction = createAction(
 
 export const jobUpdateAction = createAction(
   '[Jobs] Update Job',
-  props<{ job: JobAd }>()
+  props<{ job: JobAdDto }>()
 );
 
 export const jobUpdateSuccessAction = createAction(
