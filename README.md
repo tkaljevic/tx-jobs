@@ -122,3 +122,11 @@ To start linting, run following command:
 ```console
 npm run lint
 ```
+
+### Building
+
+To build the project, run following command:
+
+```console
+npm run build
+```
