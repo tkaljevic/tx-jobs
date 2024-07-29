@@ -4,8 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { JobAd, JobAdDto } from '@app-models';
 import { Store } from '@ngrx/store';
 import { filter, map } from 'rxjs';
-import { AddEditJobComponent } from 'src/app/features/jobs-list/components/add-edit-job/add-edit-job.component';
 import { DeleteJobComponent } from 'src/app/features/jobs-list/components/delete-job/delete-job.component';
+import { EditJobComponent } from 'src/app/features/jobs-list/components/edit-job/edit-job.component';
 import { ListInvoicesComponent } from 'src/app/features/jobs-list/components/list-invoices/list-invoices.component';
 import { UpdateStatusComponent } from 'src/app/features/jobs-list/components/update-status/update-status.component';
 import * as JobActions from '../../../../core/store/actions/job.actions';
@@ -56,7 +56,7 @@ export class DialogUtilityService {
   }
 
   editJob(job: JobAd) {
-    const updateRef = this.dialog.open(AddEditJobComponent, {
+    const updateRef = this.dialog.open(EditJobComponent, {
       data: {
         job,
       },
