@@ -25,6 +25,7 @@
       "@core-services": ["src/app/core/services"],
       "@core-interceptors": ["src/app/core/interceptors"],
       "@core-components": ["src/app/core/components"],
+      "@core-validators": ["src/app/core/validators"],
       "@app-models": ["src/app/shared/models"],
       "@app-enums": ["src/app/shared/enums"],
       "@shared-services": ["src/app/shared/services"],
