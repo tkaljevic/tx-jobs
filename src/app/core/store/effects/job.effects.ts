@@ -155,7 +155,7 @@ export class JobEffects {
         this.store.pipe(select(JobSelectors.currentPaginationSelector))
       ),
       mergeMap(([action, pagination]) => {
-        const term = Object.values(action.term)[0].toLowerCase();
+        const term = action.term.toLowerCase();
         if (!term.length) {
           return of(
             JobActions.loadJobsAction({
@@ -238,7 +238,7 @@ export class JobEffects {
     invoiceDueDate.setDate(0);
     return {
       amount: Math.floor(Math.random() * (1000 - 100 + 1)) + 100,
-      dueDate: invoiceDueDate,
+      dueDate: invoiceDueDate.toISOString(),
       jobAdId: job.id,
     };
   }

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { JobAdDto } from '@app-models';
 import { JobFormComponent } from "../job-form/job-form.component";
 
@@ -23,7 +23,6 @@ export class AddJobComponent implements OnInit {
   //#region Component Properties
 
   public jobForm: FormGroup;
-  public data = inject(MAT_DIALOG_DATA);
   private dialogRef = inject(MatDialogRef<AddJobComponent>);
 
 
