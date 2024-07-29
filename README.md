@@ -66,7 +66,9 @@ Before you continue development on this project, it is recommended to read conte
 
 ## **Running the Application Locally**
 
-There are two ways to run the application:
+<!-- There are two ways to run the application: -->
+
+To run this project, follow instructions as listed bellow:
 
 ### Manually start individual parts
 
@@ -74,7 +76,7 @@ There are two ways to run the application:
 2. In another console/tab, run `ng serve` to start the application.
 
 ```bash
-json-server './src/assets/db/db.json'
+npx json-server './src/assets/db/db.json'
 ```
 
 ```bash
@@ -83,7 +85,7 @@ ng serve
 
 > **RECOMMENDED:** In this case, type `CTRL + Shift + 5` in your IDE's terminal to split it, so you can see both outputs simultaneously.
 
-### Running with the start command
+<!-- ### Running with the start command
 
 To run the application with a single command, use the following:
 
@@ -93,7 +95,7 @@ npm run start
 
 This command will start the mocked backend (json-server) and serve the frontend application.
 
-> **RECOMMENDED:** Use your editor's integrated terminal to easily see the build output.
+> **RECOMMENDED:** Use your editor's integrated terminal to easily see the build output. -->
 
 ## **Documentation**
 
