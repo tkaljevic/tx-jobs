@@ -72,9 +72,6 @@ To run this project, follow instructions as listed bellow:
 
 ### Manually start individual parts
 
-1. Run `json-server './src/assets/db/db.json'` to start the mocked backend.
-2. In another console/tab, run `ng serve` to start the application.
-
 ```bash
 npx json-server './src/assets/db/db.json'
 ```
