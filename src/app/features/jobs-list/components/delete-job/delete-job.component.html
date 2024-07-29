@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>Delete job?</h2>
+<mat-dialog-content>
+  Would you like to delete {{ data.job.title }}?
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button mat-dialog-close color="warn">No</button>
+  <button mat-flat-button color="primary" (click)="onConfirm()">Yes</button>
+</mat-dialog-actions>

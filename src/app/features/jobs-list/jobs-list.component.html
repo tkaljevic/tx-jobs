@@ -1,0 +1,55 @@
+<div class="row" class="top-menu">
+  <div class="col-xs-4">
+    <button mat-flat-button color="primary" (click)="onAddJob()">
+      Add Job
+    </button>
+  </div>
+  <div class="col-xs-8">
+    <div class="filter-wrapper">
+      <app-filter-jobs />
+    </div>
+  </div>
+</div>
+
+@if(vm$ | async; as vm) { @if(vm.jobs.length) {
+<div class="row">&nbsp;</div>
+@for(job of vm.jobs; track job.id) {
+<mat-card appearance="outlined" class="job-item">
+  <mat-card-content>
+    <div class="row">
+      <div class="col-xs-10 col-sm-6 col-md-8">
+        <div class="title">
+          {{ job.title }}
+        </div>
+      </div>
+      <div class="col-xs-2 hidden visible-xs">
+        <app-mobile-menu [job]="job" />
+      </div>
+      <div
+        class="col-sm-6 col-md-4 hidden visible-sm visible-md visible-lg visible-xl"
+      >
+        <app-job-actions [job]="job" />
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+} @if((vm.pagination) && (vm.currentPagination)) {
+<div class="pagination">
+  <mat-paginator
+    [length]="vm.pagination.items"
+    [pageSize]="vm.currentPagination.perPage"
+    [pageSizeOptions]="[3, 5, 10]"
+    [pageIndex]="vm.currentPagination.page - 1"
+    (page)="onPaginationChange($event)"
+    aria-label="Select page"
+  >
+  </mat-paginator>
+</div>
+
+} } @else {
+<div class="row">
+  <div class="col-sm-12">
+    <div class="no-jobs">No jobs to show.</div>
+  </div>
+</div>
+} }

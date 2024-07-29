@@ -1,0 +1,54 @@
+<form [formGroup]="jobForm">
+  <div class="form-item">
+    <mat-form-field>
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" />
+    </mat-form-field>
+  </div>
+
+  <div class="form-item">
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <input matInput formControlName="description" />
+    </mat-form-field>
+  </div>
+
+  <div class="form-item">
+    <mat-form-field>
+      <mat-label>Skills</mat-label>
+      <mat-chip-grid
+        #reactiveChipGrid
+        aria-label="Enter skills"
+        formControlName="skills"
+      >
+        @for (currentSkill of currentSkills(); track currentSkill) {
+        <mat-chip-row (removed)="onRemoveSkill(currentSkill)">
+          {{ currentSkill }}
+          <button matChipRemove aria-label="Remove skill">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+        }
+      </mat-chip-grid>
+      <input
+        placeholder="Skill"
+        [matChipInputFor]="reactiveChipGrid"
+        (matChipInputTokenEnd)="onAddSkill($event)"
+      />
+      <mat-hint>Press Enter to add skill</mat-hint>
+    </mat-form-field>
+  </div>
+
+  <div class="form-item">
+    <mat-form-field>
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        @for(status of jobStatuses; track status) {
+        <mat-option [value]="status">
+          {{ status | titlecase }}
+        </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+</form>

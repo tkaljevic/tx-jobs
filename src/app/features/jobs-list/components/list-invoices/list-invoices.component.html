@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>Invoices</h2>
+<mat-dialog-content class="mat-typography">
+  @let invoices = invoices$ | async; @if(invoices?.length) {
+  <div class="wrapper">
+    @for(item of invoices; track item.id) {
+
+    <mat-card appearance="outlined" class="invoice-wrapper">
+      <mat-card-content>
+        <div class="amount">Amount {{ item.amount }}</div>
+        <div class="date">Due date {{ item.dueDate | date }}</div>
+      </mat-card-content>
+    </mat-card>
+
+    }
+  </div>
+  } @else {
+  <div class="no-invoices">No invoices yet for this Job.</div>
+  }
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-flat-button mat-dialog-close color="primary">OK</button>
+</mat-dialog-actions>
