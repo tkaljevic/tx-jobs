@@ -10,7 +10,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Store } from '@ngrx/store';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs';
 import * as JobActions from '../../../../core/store/actions/job.actions';
 
 @Component({
@@ -52,6 +52,7 @@ export class FilterJobsComponent implements OnInit {
       .pipe(
         debounceTime(500),
         distinctUntilChanged(),
+        map(term => `${Object.values(term)[0]}`),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(this.handleSearch);
